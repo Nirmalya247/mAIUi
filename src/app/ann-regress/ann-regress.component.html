@@ -1,13 +1,13 @@
 <div class="app-parent">
     <div class="ai-parent">
         <div class="model-button-parent">
-            <button class="layer-button" (click)="changeLayer(1)">+</button>
-            <button class="layer-button" (click)="changeLayer(-1)">-</button>
+            <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeLayer(1)"><i class="large material-icons">add</i></button>
+            <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeLayer(-1)"><i class="large material-icons">remove</i></button>
         </div>
         <div class="layer-button-parent">
             <div class="layer-button-holder" *ngFor="let layer of layers; let l = index">
-                <button class="layer-button" (click)="changeNode(1, l)">+</button>
-                <button class="layer-button" (click)="changeNode(-1, l)">-</button>
+                <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeNode(1, l)"><i class="large material-icons">add</i></button>
+                <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeNode(-1, l)"><i class="large material-icons">remove</i></button>
             </div>
         </div>
         <div class="model-parent">
@@ -15,22 +15,22 @@
                 <line id="line-{{ l }}" class="line" *ngFor="let line of lines; let l = index" />
             </svg>
             <div *ngFor="let layer of layers; let l = index" class="layer-parent">
-                <button id="but-{{ l }}-{{ n }}" *ngFor="let node of layer; let n = index" class="node-parent"></button>
+                <button id="but-{{ l }}-{{ n }}" *ngFor="let node of layer; let n = index" class="node-parent btn-floating btn-sm waves-effect waves-light grey"></button>
             </div>
         </div>
     </div>
     <br>
     <div class="controls-parent">
-        <button (click)="train();">train</button>
-        <button (click)="predictMode = !predictMode">mode</button>
+        <button (click)="train();" class="controls-button btn-floating btn-large waves-effect waves-light red"><i class="large material-icons">play_arrow</i></button>
+        <button (click)="predictMode = !predictMode" class="controls-button btn-floating btn-large waves-effect waves-light red"><i class="large material-icons">{{ predictMode ? 'lightbulb_outline' : 'playlist_add' }}</i></button>
     </div>
     <div class="data-parent">
         <div class="table-parent">
             <table>
-                <tr>
-                    <th class="data-x" *ngFor="let x of layers[0]; let i = index">x{{i}}</th>
-                    <th class="data-y" *ngFor="let y of layers[layers.length - 1]; let i = index">y{{i}}</th>
-                    <th class="data-action">action</th>
+                <tr class="">
+                    <th class="data-x blue lighten-2" *ngFor="let x of layers[0]; let i = index">x{{i}}</th>
+                    <th class="data-y indigo lighten-2" *ngFor="let y of layers[layers.length - 1]; let i = index">y{{i}}</th>
+                    <th class="data-action deep-purple lighten-2">action</th>
                 </tr>
                 <tr *ngFor="let d of datax; let i = index">
                     <td class="data-x" *ngFor="let x of datax[i]; let j = index">

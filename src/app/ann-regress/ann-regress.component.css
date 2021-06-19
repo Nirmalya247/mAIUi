@@ -1,3 +1,6 @@
+body {
+    overflow-y: scroll;
+}
 .app-parent {
     position: absolute;
     top: 80px;
@@ -21,7 +24,8 @@
     margin: 10px;
 }
 .layer-button {
-    width: 20px;
+    width: 40px;
+    height: 40px;
     margin: 5px;
     border-radius: 50%;
     cursor: pointer;
@@ -38,9 +42,9 @@
 }
 .node-parent {
     display: block;
-    width: 20px;
-    height: 20px;
-    margin: 20px;
+    width: 30px;
+    height: 30px;
+    margin: 35px;
     border-radius: 50%;
 }
 .svg-parent {
@@ -54,8 +58,14 @@
     stroke-width: 1px;
     stroke: rgb(119, 119, 119);
 }
+.controls-parent {
+    text-align: center;
+}
+.controls-button {
+    margin: 20px;
+}
 .data-parent {
-
+    margin: 0 20px 20px 20px;
 }
 .table-parent {
 
@@ -68,10 +78,10 @@ tr {
 
 }
 th {
-    border: 1px solid black;
+    padding: 2px 4px;
 }
 td {
-    border: 1px solid black;
+    padding: 2px 4px;
 }
 .data-x {
     background-color: whitesmoke;
@@ -87,6 +97,7 @@ td {
     border: 0;
     margin: 0;
     padding: 0;
+    height: 20px;
 }
 .data-input:focus {
     outline: none;
