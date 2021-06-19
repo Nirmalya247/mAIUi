@@ -1,1 +1,51 @@
-<p>ann-regress works!</p>
+<div class="app-parent">
+    <div class="ai-parent">
+        <div class="model-button-parent">
+            <button class="layer-button" (click)="changeLayer(1)">+</button>
+            <button class="layer-button" (click)="changeLayer(-1)">-</button>
+        </div>
+        <div class="layer-button-parent">
+            <div class="layer-button-holder" *ngFor="let layer of layers; let l = index">
+                <button class="layer-button" (click)="changeNode(1, l)">+</button>
+                <button class="layer-button" (click)="changeNode(-1, l)">-</button>
+            </div>
+        </div>
+        <div class="model-parent">
+            <svg class="svg-parent">
+                <line id="line-{{ l }}" class="line" *ngFor="let line of lines; let l = index" />
+            </svg>
+            <div *ngFor="let layer of layers; let l = index" class="layer-parent">
+                <button id="but-{{ l }}-{{ n }}" *ngFor="let node of layer; let n = index" class="node-parent"></button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="controls-parent">
+        <button (click)="train();">train</button>
+        <button (click)="predictMode = !predictMode">mode</button>
+    </div>
+    <div class="data-parent">
+        <div class="table-parent">
+            <table>
+                <tr>
+                    <th class="data-x" *ngFor="let x of layers[0]; let i = index">x{{i}}</th>
+                    <th class="data-y" *ngFor="let y of layers[layers.length - 1]; let i = index">y{{i}}</th>
+                    <th class="data-action">action</th>
+                </tr>
+                <tr *ngFor="let d of datax; let i = index">
+                    <td class="data-x" *ngFor="let x of datax[i]; let j = index">
+                        <input class="data-input data-x" [(ngModel)]="datax[i][j].val">
+                    </td>
+                    <td class="data-y" *ngFor="let y of datay[i]; let j = index">
+                        <input class="data-input data-y" [(ngModel)]="datay[i][j].val">
+                    </td>
+                    <td class="data-action">
+                        <button *ngIf="i == 0 && !predictMode" (click)="addData()">+</button>
+                        <button *ngIf="i == 0 && predictMode" (click)="predict();">?</button>
+                        <button *ngIf="i >= 1">x</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
