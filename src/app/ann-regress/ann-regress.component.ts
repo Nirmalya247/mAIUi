@@ -118,8 +118,9 @@ export class AnnRegressComponent implements OnInit {
             dx.push(x);
             dy.push(y);
         }
+        console.log(dx, dy);
         for (var i = 0; i < 1000; i++) {
-            for (var j = 1; j < this.datax.length; j++) {
+            for (var j = 0; j < this.datax.length - 1; j++) {
                 this.network.activate(dx[j]);
                 this.network.propagate(this.learningRate, dy[j]);
             }
@@ -130,6 +131,7 @@ export class AnnRegressComponent implements OnInit {
         var y = [];
         for (var j = 0; j < this.datax[0].length; j++) x.push(Number(this.datax[0][j].val));
         y = this.network.activate(x);
+        console.log(y);
         for (var j = 0; j < y.length; j++) y[j] = { val: y[j] };
         this.datay[0] = y;
     }
