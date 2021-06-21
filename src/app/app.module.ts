@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AnnRegressComponent } from './ann-regress/ann-regress.component';
 import { FormsModule } from '@angular/forms';
+import { AnnGraphComponent } from './ann-graph/ann-graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AnnRegressComponent
+    AnnRegressComponent,
+    AnnGraphComponent
   ],
   imports: [
     BrowserModule,

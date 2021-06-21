@@ -19,11 +19,6 @@
             </div>
         </div>
     </div>
-    <br>
-    <div class="controls-parent">
-        <button (click)="train();" class="controls-button btn-floating btn-large waves-effect waves-light red"><i class="large material-icons">play_arrow</i></button>
-        <button (click)="predictMode = !predictMode" class="controls-button btn-floating btn-large waves-effect waves-light red"><i class="large material-icons">{{ predictMode ? 'lightbulb_outline' : 'playlist_add' }}</i></button>
-    </div>
     <div class="data-parent">
         <div class="table-parent">
             <table>
@@ -40,12 +35,16 @@
                         <input class="data-input data-y" [(ngModel)]="datay[i][j].val">
                     </td>
                     <td class="data-action">
-                        <button *ngIf="i == 0 && !predictMode" (click)="addData()">+</button>
-                        <button *ngIf="i == 0 && predictMode" (click)="predict();">?</button>
-                        <button *ngIf="i >= 1" (click)="removeData(i)">x</button>
+                        <button class="table-button btn-floating btn-sm waves-effect waves-light grey" *ngIf="i == 0 && !predictMode" (click)="addData()">+</button>
+                        <button class="table-button btn-floating btn-sm waves-effect waves-light grey" *ngIf="i == 0 && predictMode" (click)="predict();">?</button>
+                        <button class="table-button btn-floating btn-sm waves-effect waves-light grey" *ngIf="i >= 1" (click)="removeData(i)">x</button>
                     </td>
                 </tr>
             </table>
         </div>
+    </div>
+    <div class="controls-parent">
+        <button (click)="train();" class="controls-button btn-floating btn-large waves-effect waves-light blue"><i class="large material-icons">play_arrow</i></button>
+        <button (click)="predictMode = !predictMode" class="controls-button btn-floating btn-large waves-effect waves-light blue"><i class="large material-icons">{{ predictMode ? 'lightbulb_outline' : 'playlist_add' }}</i></button>
     </div>
 </div>

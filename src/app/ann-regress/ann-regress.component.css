@@ -1,14 +1,18 @@
 body {
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 .app-parent {
     position: absolute;
     top: 80px;
+    bottom: 0;
     left: 0;
     width: 100%;
 }
 .ai-parent {
-    
+    position: absolute;
+    width: 60%;
+    top: 0;
+    bottom: 66px;
 }
 .model-button-parent {
     width: 100%;
@@ -59,13 +63,22 @@ body {
     stroke: rgb(119, 119, 119);
 }
 .controls-parent {
+    position: absolute;
     text-align: center;
+    bottom: 0;
+    width: 100%;
 }
 .controls-button {
-    margin: 20px;
+    margin: 5px 20px;
 }
 .data-parent {
-    margin: 0 20px 20px 20px;
+    position: absolute;
+    margin: 0;
+    left: 60%;
+    right: 0;
+    top: 0;
+    bottom: 66px;
+    overflow-y: scroll;
 }
 .table-parent {
 
@@ -91,6 +104,8 @@ td {
 }
 .data-action {
     width: 60px;
+    padding: 0;
+    text-align: center;
 }
 .data-input {
     width: 100%;
@@ -101,4 +116,12 @@ td {
 }
 .data-input:focus {
     outline: none;
+}
+.table-button {
+    width: 100%;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    line-height: 12pt;
+    border-radius: 0;
 }
