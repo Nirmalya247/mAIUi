@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Layer, Network } from 'synaptic';
-import * as $ from 'jquery'
+import * as $ from 'jquery';
+import * as $mixColors from 'mix-colors'
+import * as $color from 'color';
 import { mShape } from './mShape';
 
 @Component({
@@ -63,7 +65,8 @@ export class AnnGraphComponent implements OnInit {
             this.predict(x, y);
         }
     }
-    drawPoints(x, y, color) {
+    drawPoints(x, y, c) {
+        this.paintMode = false;
         this.context.clearRect(0, 0, this.canv.nativeElement.width, this.canv.nativeElement.height);
         for (var i = 0; i < this.datax.length; i++) {
             this.context.fillStyle = this.colors[this.datay[i].findIndex(t => t == 1)];
@@ -72,10 +75,17 @@ export class AnnGraphComponent implements OnInit {
             // console.log(this.datax[i], this.datay[i]);
         }
         if (x) {
-            this.context.fillStyle = color;
+            this.context.fillStyle = this.colors[c];
             const square = new mShape(this.context);
             square.draw(x - this.size / 2, y - this.size / 2, this.size);
             // console.log(this.datax[i], this.datay[i])
+        }
+        // var c1 = $color('red');
+        // var c2 = $color('green')
+        // var c3 = $mixColors([c1.hex(), c2.hex()]);
+        // var c4 = $mixColors(['#FF00000F', '#008000'])
+        // console.log(c1.rgb().array(), c2.hex(), c3);
+        if (this.predictMode) {
         }
     }
 
@@ -110,7 +120,8 @@ export class AnnGraphComponent implements OnInit {
     }
     changeNode(v, l) {
         if (v == 1) {
-            this.layers[l].push(1);
+            if ((l == 0 && this.layers[l].length < 2) || (l == this.layers.length - 1 && this.layers[l].length < 6) || (l > 0 && l < this.layers.length - 1)) this.layers[l].push(1);
+            else return;
         } else {
             if (this.layers[l].length >= 2) this.layers[l].pop();
             else return;
@@ -118,13 +129,13 @@ export class AnnGraphComponent implements OnInit {
         if (l == 0) {
             if (v == 1) {
                 for (var i = 0; i < this.datax.length; i++) this.datax[i].push(0);
-            } else {
+            } else if (v == -1) {
                 for (var i = 0; i < this.datax.length; i++) this.datax[i].pop();
             }
         } else if (l == this.layers.length - 1) {
             if (v == 1) {
                 for (var i = 0; i < this.datay.length; i++) this.datay[i].push(0);
-            } else {
+            } else if (v == -1) {
                 for (var i = 0; i < this.datay.length; i++) {
                     this.datay[i].pop();
                     if (this.datay[i].findIndex(t => t == 1) < 0) {
@@ -168,19 +179,53 @@ export class AnnGraphComponent implements OnInit {
     }
     train() {
         this.createModel();
+        var dx = [];
+        for (var i = 0; i < this.datax.length; i++) {
+            dx.push([this.datax[i][0] / this.canv.nativeElement.width, this.datax[i][1] / this.canv.nativeElement.height]);
+        }
         for (var i = 0; i < 1000; i++) {
-            for (var j = 0; j < this.datax.length - 1; j++) {
-                this.network.activate(this.datax[j]);
+            for (var j = 0; j < this.datax.length; j++) {
+                this.network.activate(dx[j]);
                 this.network.propagate(this.learningRate, this.datay[j]);
             }
         }
+        // console.log(this.datax, this.datay);
     }
     predict(x, y) {
-        var dx = [x, y];
+        var dx = [x / this.canv.nativeElement.width, y / this.canv.nativeElement.height];
         var dy = [];
         dy = this.network.activate(dx);
-        console.log(dy);
-        var color = dy.findIndex(t => t == 1);
+        var color = dy.findIndex(t => t >= 0.5);
+        console.log(dy, color);
         this.drawPoints(x, y, color);
+    }
+
+    paintMode = false;
+    paintPrediction() {
+        if (!this.paintMode) {
+            var w = this.canv.nativeElement.width;
+            var h = this.canv.nativeElement.height;
+            for (var xi = 0; xi < w; xi++) {
+                for (var yi = 0; yi < h; yi++) {
+                    var dx = [xi / this.canv.nativeElement.width, yi / this.canv.nativeElement.height];
+                    var dy = this.network.activate(dx);
+                    var cn = [0, 0, 0];
+                    for (var ci = 0; ci < dy.length; ci++) {
+                        var tc = $color(this.colors[ci]).rgb().array();
+                        cn[0] += tc[0] * dy[ci];
+                        cn[1] += tc[1] * dy[ci];
+                        cn[2] += tc[2] * dy[ci];
+                        // console.log(tc[0], dy);
+                    }
+                    cn[0] /= dy.length;
+                    cn[1] /= dy.length;
+                    cn[2] /= dy.length;
+                    cn = $color(cn).lighten(0.8).hex();
+                    this.context.fillStyle = cn.toString();
+                    this.context.fillRect(xi, yi, 1, 1);
+                }
+            }
+        } else this.drawPoints(null, null, null);
+        this.paintMode = !this.paintMode;
     }
 }
