@@ -110,15 +110,22 @@ export class AnnRegressComponent implements OnInit {
         this.createModel();
         var dx = [];
         var dy = [];
+        var MaxMin = Array.from({ length: this.datax[0].length }, () => { return { max: null, min: null } });
+        for (var i = 1; i < this.datax.length; i++) {
+            for (var j = 0; j < this.datax[0].length; j++) {
+                if (MaxMin[j].max == null || MaxMin[j].max < Number(this.datax[i][j].val)) MaxMin[j].max = Number(this.datax[i][j].val);
+                if (MaxMin[j].min == null || MaxMin[j].min > Number(this.datax[i][j].val)) MaxMin[j].min = Number(this.datax[i][j].val);
+            }
+        }
         for (var i = 1; i < this.datax.length; i++) {
             var x = [];
             var y = [];
-            for (var j = 0; j < this.datax[i].length; j++) x.push(Number(this.datax[i][j].val));
+            for (var j = 0; j < this.datax[i].length; j++) x.push((Number(this.datax[i][j].val) - MaxMin[j].min) / (MaxMin[j].max - MaxMin[j].min));
             for (var j = 0; j < this.datay[i].length; j++) y.push(Number(this.datay[i][j].val));
             dx.push(x);
             dy.push(y);
         }
-        console.log(dx, dy);
+        console.log(dx, dy, MaxMin);
         for (var i = 0; i < 1000; i++) {
             for (var j = 0; j < this.datax.length - 1; j++) {
                 this.network.activate(dx[j]);
@@ -129,7 +136,14 @@ export class AnnRegressComponent implements OnInit {
     predict() {
         var x = [];
         var y = [];
-        for (var j = 0; j < this.datax[0].length; j++) x.push(Number(this.datax[0][j].val));
+        var MaxMin = Array.from({ length: this.datax[0].length }, () => { return { max: null, min: null } });
+        for (var i = 1; i < this.datax.length; i++) {
+            for (var j = 0; j < this.datax[0].length; j++) {
+                if (MaxMin[j].max == null || MaxMin[j].max < Number(this.datax[i][j].val)) MaxMin[j].max = Number(this.datax[i][j].val);
+                if (MaxMin[j].min == null || MaxMin[j].min > Number(this.datax[i][j].val)) MaxMin[j].min = Number(this.datax[i][j].val);
+            }
+        }
+        for (var j = 0; j < this.datax[0].length; j++) x.push((Number(this.datax[0][j].val) - MaxMin[j].min) / (MaxMin[j].max - MaxMin[j].min));
         y = this.network.activate(x);
         console.log(y);
         for (var j = 0; j < y.length; j++) y[j] = { val: y[j] };
