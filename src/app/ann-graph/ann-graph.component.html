@@ -1,1 +1,29 @@
-<p>ann-graph works!</p>
+<div class="app-parent">
+    <div class="ai-parent">
+        <div class="model-button-parent">
+            <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeLayer(1)"><i class="large material-icons">add</i></button>
+            <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeLayer(-1)"><i class="large material-icons">remove</i></button>
+        </div>
+        <div class="layer-button-parent">
+            <div class="layer-button-holder" *ngFor="let layer of layers; let l = index">
+                <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeNode(1, l)"><i class="large material-icons">add</i></button>
+                <button class="layer-button btn-floating btn-sm waves-effect waves-light grey" (click)="changeNode(-1, l)"><i class="large material-icons">remove</i></button>
+            </div>
+        </div>
+        <div class="model-parent">
+            <svg class="svg-parent">
+                <line id="line-{{ l }}" class="line" *ngFor="let line of lines; let l = index" />
+            </svg>
+            <div *ngFor="let layer of layers; let l = index" class="layer-parent">
+                <button id="but-{{ l }}-{{ n }}" *ngFor="let node of layer; let n = index" class="node-parent btn-floating btn-sm waves-effect waves-light" [ngClass]="l == layers.length - 1 ? colors[n] : 'grey'" (click)="selectNode(l, n);"></button>
+            </div>
+        </div>
+    </div>
+    <div class="data-parent" (window:resize)="onResize($event);">
+        <canvas #canv class="canv" (click)="addPoint($event);"></canvas>
+    </div>
+    <div class="controls-parent">
+        <button (click)="train();" class="controls-button btn-floating btn-large waves-effect waves-light blue"><i class="large material-icons">play_arrow</i></button>
+        <button (click)="predictMode = !predictMode" class="controls-button btn-floating btn-large waves-effect waves-light" [ngClass]="predictMode == false ? colors[selectedColor] : 'blue'"><i class="large material-icons">{{ predictMode ? 'lightbulb_outline' : 'playlist_add' }}</i></button>
+    </div>
+</div>
